@@ -1,62 +1,81 @@
-# based on https://www.pyimagesearch.com/2018/07/30/opencv-object-tracking/
-#   author: Adrian Rosebrock
-#   date:   30 July 2018
 from imutils.video import VideoStream
 from imutils.video import FPS
 import imutils
 import numpy as np
 import time
-# get opencv: https://stackoverflow.com/questions/24415069/is-opencv-supported-on-python-3-yet
-import cv2  # https://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv
-# we are using OpenCV version 3.4.5
+import sys
+import cv2
 
-tracker = cv2.TrackerCSRT_create()
+
+def filter_white_only(frame):
+    global res
+    # Convert BGR to HSV
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # define range of white color in HSV
+    #   To get white:
+    #       Hue doesn't matter
+    #       Saturation should be a low number
+    #       Value should be a high number
+    lower = np.array([0, 0, 120])
+    upper = np.array([255, 80, 255])
+
+    # Threshold the HSV image to get only white colors
+    white_threshold = cv2.inRange(hsv, lower, upper)
+
+    return white_threshold
+
+
+def make_mask(frame):
+    #fgMask = backSub.apply(frame)
+    #frame = cv2.bitwise_and(frame, frame, mask=fgMask)
+    mask = filter_white_only(frame)
+    return mask
+
+
+backSub = cv2.createBackgroundSubtractorMOG2()
+tracker = cv2.TrackerTLD_create()
 # if errors here, run > pip install opencv-contrib-python
 
-# initialize some stuff
-initBB = None  # bounding box
-fps = None    # frames per second throughput estimator
+video = cv2.VideoCapture('vid/pickup_and_go.mp4')
 
-#
-vs = cv2.VideoCapture('vid/handblock.mp4')
+ok, frame = video.read()
+if not ok:
+    print('Cannot read video file')
+    sys.exit()
+
+frame = imutils.resize(frame, width=1200)
+mask = make_mask(frame)
+bbox = cv2.selectROI(frame, False)
+tracker.init(mask, bbox)
 
 # loop over frames from video
 while True:
-    frame = vs.read()
-
-    if frame is None:
+    ok, frame = video.read()
+    if not ok:
         break
 
-    print(frame)
-
-    frame = imutils.resize(frame, width=500)
-    (Ht, Wd) = np.array(frame, dtype=object).shape[:2]
-
+    frame = imutils.resize(frame, width=1200)
+    mask = make_mask(frame)
     # check to see if we are currently tracking an object
-    if initBB is not None:
+    if bbox is not None:
         # grab the new bounding box coordinates of the object
-        (success, box) = tracker.update(frame)
+        (success, box) = tracker.update(mask)
 
         # check to see if the tracking was a success
         if success:
             (x, y, w, h) = [int(v) for v in box]
             cv2.rectangle(frame, (x, y), (x + w, y + h),
                           (0, 255, 0), 2)
+            cv2.rectangle(mask, (x, y), (x + w, y + h),
+                          (0, 255, 0), 2)
 
-        # update the FPS counter
-        fps.update()
-        fps.stop()
+    # show the output frame
+    cv2.imshow("Frame", frame)
+    cv2.imshow("Mask", mask)
 
-        # initialize the set of information we'll be displaying on
-        # the frame
-        info = [
-            ("Tracker", "CSRT"),
-            ("Success", "Yes" if success else "No"),
-            ("FPS", "{:.2f}".format(fps.fps())),
-        ]
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("q"):
+        break
 
-        # loop over the info tuples and draw them on our frame
-        for (i, (k, v)) in enumerate(info):
-            text = "{}: {}".format(k, v)
-            cv2.putText(frame, text, (10, Ht - ((i * 20) + 20)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+cv2.destroyAllWindows()
