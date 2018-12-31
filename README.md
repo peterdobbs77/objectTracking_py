@@ -1,6 +1,6 @@
 # objectTracking_py
 
-Runs on Python 3.7.0 64-bit
+Runs on Python 3.7.0 64-bit <br>
 Uses OpenCV 3.4.5
     from https://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv because of the suggestion from https://stackoverflow.com/questions/24415069/is-opencv-supported-on-python-3-yet
 
