@@ -4,7 +4,7 @@ import imutils
 import numpy as np
 import time
 import sys
-import cv2
+import cv2.cv2 as cv2
 
 
 def filter_white_only(frame):

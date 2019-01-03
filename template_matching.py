@@ -1,15 +1,57 @@
-import cv2 as cv
+import cv2.cv2 as cv2
+import sys
 import numpy as np
-from matplotlib import pyplot as plt
+import glob
 
-img_rgb = cv.imread('templates/full1.jpg')
-img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
-template = cv.imread('templates/temp1.jpg', 0)
-w, h = template.shape[::-1]
 
-res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
-threshold = 0.8
-loc = np.where(res >= threshold)
-for pt in zip(*loc[::-1]):
-    cv.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
-cv.imwrite('res.png', img_rgb)
+def filter_white_only(frame):
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    lower = np.array([0, 0, 120])
+    upper = np.array([255, 80, 255])
+    # Threshold the HSV image to get only white colors
+    white_threshold = cv2.inRange(hsv, lower, upper)
+    #cv2.imshow("white_threshold", white_threshold)
+    return white_threshold
+
+
+video = cv2.VideoCapture('vid/handblock.mp4')
+backSub = cv2.createBackgroundSubtractorMOG2()
+templates = [cv2.imread(file, cv2.IMREAD_GRAYSCALE)
+             for file in glob.glob('templates/temp*.jpg')]
+
+while True:
+    ok, frame = video.read()
+    if not ok:
+        break
+
+    # # WHITE FILTERING - does not work :(
+    # #     maybe because the color thresholds are bad...
+    # #     OR the template needs to be filtered...
+    # #     OR background subtraction should come before...
+    # #template = filter_white_only(template)
+    # whMask = filter_white_only(frame)
+    # frame = cv2.bitwise_and(frame, frame, mask=whMask)
+    # #cv2.imshow("whMask", whMask)
+
+    # BACKGROUND SUBSTITUTION
+    fgMask = backSub.apply(frame)
+    #cv2.imshow("fgMask", fgMask)
+    frame = cv2.bitwise_and(frame, frame, mask=fgMask)
+
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    for tmp in templates:
+        w, h = tmp.shape[::-1]
+        res = cv2.matchTemplate(gray_frame, tmp, cv2.TM_CCOEFF_NORMED)
+        loc = np.where(res >= 0.7)
+        for pt in zip(*loc[::-1]):
+            cv2.rectangle(frame, pt, (pt[0] + w, pt[1] + h), (0, 255, 0), 3)
+
+    cv2.imshow("Frame", frame)
+
+    key = cv2.waitKey(1)
+
+    if key == 27:
+        break
+
+video.release()
+cv2.destroyAllWindows()
