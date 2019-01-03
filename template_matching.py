@@ -28,17 +28,17 @@ while True:
     # #     maybe because the color thresholds are bad...
     # #     OR the template needs to be filtered...
     # #     OR background subtraction should come before...
-    # #template = filter_white_only(template)
     # whMask = filter_white_only(frame)
-    # frame = cv2.bitwise_and(frame, frame, mask=whMask)
+    # frame2 = cv2.bitwise_and(frame, frame, mask=whMask)
     # #cv2.imshow("whMask", whMask)
 
-    # BACKGROUND SUBSTITUTION
+    # BACKGROUND SUBTRACTION
     fgMask = backSub.apply(frame)
     #cv2.imshow("fgMask", fgMask)
-    frame = cv2.bitwise_and(frame, frame, mask=fgMask)
+    frame2 = cv2.bitwise_and(frame, frame, mask=fgMask)
 
-    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # TEMPLATE MATCHING
+    gray_frame = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
     for tmp in templates:
         w, h = tmp.shape[::-1]
         res = cv2.matchTemplate(gray_frame, tmp, cv2.TM_CCOEFF_NORMED)
@@ -49,7 +49,6 @@ while True:
     cv2.imshow("Frame", frame)
 
     key = cv2.waitKey(1)
-
     if key == 27:
         break
 
