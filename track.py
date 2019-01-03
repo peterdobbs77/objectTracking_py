@@ -8,21 +8,12 @@ import cv2
 
 
 def filter_white_only(frame):
-    global res
-    # Convert BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-    # define range of white color in HSV
-    #   To get white:
-    #       Hue doesn't matter
-    #       Saturation should be a low number
-    #       Value should be a high number
     lower = np.array([0, 0, 120])
     upper = np.array([255, 80, 255])
 
     # Threshold the HSV image to get only white colors
     white_threshold = cv2.inRange(hsv, lower, upper)
-
     return white_threshold
 
 
@@ -57,18 +48,16 @@ while True:
 
     frame = imutils.resize(frame, width=1200)
     mask = make_mask(frame)
-    # check to see if we are currently tracking an object
-    if bbox is not None:
-        # grab the new bounding box coordinates of the object
-        (success, box) = tracker.update(mask)
 
-        # check to see if the tracking was a success
-        if success:
-            (x, y, w, h) = [int(v) for v in box]
-            cv2.rectangle(frame, (x, y), (x + w, y + h),
-                          (0, 255, 0), 2)
-            cv2.rectangle(mask, (x, y), (x + w, y + h),
-                          (0, 255, 0), 2)
+    # grab the new bounding box coordinates of the object
+    (success, box) = tracker.update(mask)
+
+    # check to see if the tracking was a success
+    if success:
+        (x, y, w, h) = [int(v) for v in box]
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    # template matching
 
     # show the output frame
     cv2.imshow("Frame", frame)

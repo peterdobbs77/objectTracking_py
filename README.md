@@ -7,6 +7,9 @@ Uses OpenCV 3.4.5<br>
 If you're having problems, make sure you install OpenCV's Extra Modules (https://github.com/opencv/opencv_contrib)
 
 ## Works Consulted (References):
+Harrison [at] pythonprogramming [dot] net
+https://pythonprogramming.net/template-matching-python-opencv-tutorial/
+
 Adrian Rosebrock<br>
 https://www.pyimagesearch.com/2018/07/30/opencv-object-tracking/
 
