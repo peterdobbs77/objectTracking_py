@@ -5,9 +5,11 @@ Uses OpenCV 3.4.5<br>
 
 ## Setup
 Use pip to install the full, **unofficial** OpenCV package
+
 '''
 $ [py -m] pip install opencv-contrib-python
 '''
+
 Disclaimer: this **unofficial** distribution is not approved or supported by the creators of OpenCV. Make sure that you do not have it installed along with other distributions or versions of OpenCV.
 
 ## Works Consulted (References):
