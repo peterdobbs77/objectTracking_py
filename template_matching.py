@@ -14,7 +14,7 @@ def filter_white_only(frame):
     return white_threshold
 
 
-video = cv2.VideoCapture('vid/handblock.mp4')
+video = cv2.VideoCapture('vid/handblock_30fps.mp4')
 backSub = cv2.createBackgroundSubtractorMOG2()
 templates = [cv2.imread(file, cv2.IMREAD_GRAYSCALE)
              for file in glob.glob('templates/temp*.jpg')]
@@ -45,7 +45,6 @@ while True:
         loc = np.where(res >= 0.7)
         for pt in zip(*loc[::-1]):
             cv2.rectangle(frame, pt, (pt[0] + w, pt[1] + h), (0, 255, 0), 3)
-
     cv2.imshow("Frame", frame)
 
     key = cv2.waitKey(1)
