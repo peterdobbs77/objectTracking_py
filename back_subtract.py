@@ -1,5 +1,5 @@
 from __future__ import print_function
-import cv2
+import cv2.cv2 as cv2
 # this uses 3.4.5
 import argparse
 import numpy as np
