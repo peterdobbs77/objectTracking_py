@@ -1,8 +1,8 @@
-from __future__ import print_function
-import cv2.cv2 as cv2
+import cv2
 # this uses 3.4.5
 import argparse
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 def filter_white_only(frame):
@@ -23,26 +23,29 @@ def filter_white_only(frame):
 
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(frame, frame, mask=mask)
-    cv2.imshow('res', res)
+    plt.imshow(res)
+    plt.show()
 
 
 backSub = cv2.createBackgroundSubtractorMOG2()
 #backSub = cv.createBackgroundSubtractorKNN()
 
-capture = cv2.VideoCapture('vid/handblock.mp4')
+capture = cv2.VideoCapture('vid/handblock_60fps.mp4')
 
 while True:
     ret, frame = capture.read()
     if frame is None:
         break
 
-    cv2.imshow('Frame', frame)
+    plt.imshow(frame)
+    plt.show()
 
     # [apply]
     # update the background model
     #fgMask = backSub.apply(frame)
     fgMask = backSub.apply(frame)
-    cv2.imshow('FG Mask', fgMask)
+    plt.imshow(fgMask)
+    plt.show()
     frame2 = cv2.bitwise_and(frame, frame, mask=fgMask)
     # [apply]
 
@@ -54,7 +57,3 @@ while True:
     cv2.putText(frame, str(capture.get(cv2.CAP_PROP_POS_FRAMES)), (15, 15),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
     # [display_frame_number]
-
-    keyboard = cv2.waitKey(30)
-    if keyboard == 'q' or keyboard == 27:
-        break
