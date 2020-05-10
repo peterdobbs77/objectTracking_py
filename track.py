@@ -28,7 +28,7 @@ backSub = cv2.createBackgroundSubtractorMOG2()
 tracker = cv2.TrackerTLD_create()
 # if errors here, run > pip install opencv-contrib-python
 
-video = cv2.VideoCapture('vid/pickup_and_go.mp4')
+video = cv2.VideoCapture('vid/pickup_and_go_30fps.mp4')
 
 ok, frame = video.read()
 if not ok:
@@ -60,8 +60,8 @@ while True:
     # template matching
 
     # show the output frame
-    cv2.imshow("Frame", frame)
     cv2.imshow("Mask", mask)
+    cv2.imshow("Frame", frame)
 
     key = cv2.waitKey(1) & 0xFF
     if key == ord("q"):

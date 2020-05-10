@@ -3,4 +3,7 @@ templates/full1.JPG
 haar_img/neg/*
 .vscode/*
 vid/Thumbs.db
-.ipynb_checkpoints/detection_demo-checkpoint.ipynb
+.ipynb_checkpoints/*
+demo/Thumbs.db
+templates/Thumbs.db
+vid/Thumbs.db

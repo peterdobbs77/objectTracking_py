@@ -15,11 +15,12 @@ Disclaimer: this **unofficial** distribution is not approved or supported by the
 
 ## Examples
 
-### Find Frisbee after Handblock 
+### Find Frisbee after Handblock
 * Original, cropped and resized to 60% and 15 fps
 ![Frisbee Detection Demo](demo/handblock.gif)
 
-* 
+* User-selected ROI (region of interest) detection and white filtering from [track.py](track.py)
+![ROI Detection](demo/pickup_and_go_30fps_track_py_annotated.gif)
 
 ## Works Consulted (References):
 Harrison [at] pythonprogramming [dot] net
