@@ -2,3 +2,5 @@ vid/example.MP4
 templates/full1.JPG
 haar_img/neg/*
 .vscode/*
+vid/Thumbs.db
+.ipynb_checkpoints/detection_demo-checkpoint.ipynb
