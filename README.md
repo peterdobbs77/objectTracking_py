@@ -1,17 +1,20 @@
 # objectTracking_py
 
-Built on Python 3.7.0 64-bit <br>
-Uses OpenCV 3.4.5<br>
+Built on Python 3.12.0 64-bit <br>
+Uses OpenCV 4.5<br>
+
+## Introduction
+
+Start out with [detection_demo](./detection_demo.ipynb) to get a sense of what's going on here.
 
 ## Setup
-Use pip to install the full, **unofficial** OpenCV package
+Use pip to install the full, OpenCV package
 
 '''
 [py -m] pip install opencv-contrib-python
 '''
 
-Disclaimer: this **unofficial** distribution is not approved or supported by the creators of OpenCV. Make sure that you do not have it installed along with other distributions or versions of OpenCV.
-
+Disclaimer: Make sure that you do not have it installed along with other distributions or versions of OpenCV.
 
 ## Examples
 
@@ -23,6 +26,10 @@ Disclaimer: this **unofficial** distribution is not approved or supported by the
 ![ROI Detection](demo/pickup_and_go_30fps_track_py_annotated.gif)
 
 ## Works Consulted (References):
+
+Mohamed Samir<br>
+https://github.com/mohamedsamirx/Real-time-object-tracking-demo
+
 Harrison [at] pythonprogramming [dot] net
 https://pythonprogramming.net/template-matching-python-opencv-tutorial/
 
