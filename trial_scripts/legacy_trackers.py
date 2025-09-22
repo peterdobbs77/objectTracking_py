@@ -49,7 +49,7 @@ def make_mask(frame):
 
 # if errors here, run > pip install opencv-contrib-python
 
-video = cv.VideoCapture('vid/pickup_and_go_30fps.mp4')
+video = cv.VideoCapture('../vid/pickup_and_go_30fps.mp4')
 
 ok, frame = video.read()
 if not ok:
