@@ -20,10 +20,10 @@ Disclaimer: Make sure that you do not have it installed along with other distrib
 
 ### Find Frisbee after Handblock
 * Original, cropped and resized to 60% and 15 fps
-![Frisbee Detection Demo](demo/handblock.gif)
+![Frisbee Detection Demo](demo_assets/handblock.gif)
 
 * User-selected ROI (region of interest) detection and white filtering from [track.py](track.py)
-![ROI Detection](demo/pickup_and_go_30fps_track_py_annotated.gif)
+![ROI Detection](demo_assets/pickup_and_go_30fps_track_py_annotated.gif)
 
 ## Works Consulted (References):
 
